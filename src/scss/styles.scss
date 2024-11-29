@@ -1,0 +1,119 @@
+// Import all of Bootstrap's CSS
+@import "bootstrap/scss/bootstrap";
+
+// importing core styling file
+@import './fontawesome/fontawesome.scss';
+
+// our project needs Classic Solid, Brands, and Sharp Solid
+@import './fontawesome/solid.scss';
+@import './fontawesome/brands.scss';
+
+// Add transition for smooth fading and sliding effects
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.nav-img {
+    filter: invert(1);
+}
+
+.user-message,
+.assistant-message {
+    padding: 10px;
+    padding-bottom: 0px;
+    border-radius: 5px;
+    margin: 5px;
+    max-width: fit-content;
+    transition: all 0.3s ease-in-out;
+    max-width: 92%;
+}
+
+// User's message with sliding animation from the right
+.user-message {
+    text-align: right;
+    align-self: end;
+    background-color: #0d6efd25;
+    animation: slideInRight 0.3s ease-in-out;
+}
+
+// Assistant's message with sliding animation from the left
+.assistant-message {
+    text-align: left;
+    align-self: start;
+    background-color: #250dfd25;
+    animation: slideInLeft 0.3s ease-in-out;
+}
+
+// Hover effect to change background color when hovering over a message
+.user-message:hover,
+.assistant-message:hover {
+    cursor: text;
+}
+
+.user-message:hover {
+    background-color: #0d6efd70;
+}
+
+.assistant-message:hover {
+    background-color: #250dfd50;
+}
+
+// // Adding a subtle animation when the messages appear
+// .user-message,
+// .assistant-message {
+//     animation: fadeIn 0.7s ease-out;
+// }
+
+#output {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}

@@ -3,16 +3,21 @@ import DOMPurify from 'dompurify';
 import { marked } from 'marked';
 import { currentTopic, saveTopicsToStorage, topics } from './topic';
 
+export function scrollToBottom() {
+    const output = document.getElementById('output');
+    output.scrollTop = output.scrollHeight; // Scroll to the bottom
+}
+
 // Create and append a user message
 export function createUserMessage(message, saveToStorage = true) {
     const element = document.createElement('div');
     element.classList.add('user-message');
     element.innerHTML = DOMPurify.sanitize(marked.parse(message));
     document.getElementById('output').appendChild(element);
-    element.scrollIntoView({ behavior: 'smooth' });
+    scrollToBottom();
 
     if (saveToStorage) {
-        topics[currentTopic].push({ role: 'user', content: message });
+        topics[currentTopic].messages.push({ role: 'user', content: message });
         saveTopicsToStorage();
     }
 }
@@ -29,7 +34,7 @@ export function createOrUpdateAssistantMessage(content, outputId = null) {
     }
 
     element.innerHTML = DOMPurify.sanitize(marked.parse(content));
-    element.scrollIntoView({ behavior: 'smooth' });
+    scrollToBottom();
 
     return element;
 }
@@ -53,8 +58,8 @@ export function processQuery() {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            model: "llama3.2",
-            messages: topics[currentTopic],
+            model: topics[currentTopic].model,
+            messages: topics[currentTopic].messages,
             stream: true,
         }),
     })
@@ -70,7 +75,7 @@ function handleStreamResponse(response, outputId, output) {
     function processStream({ done, value }) {
         if (done) {
             if (output.trim()) {
-                topics[currentTopic].push({ role: 'assistant', content: output });
+                topics[currentTopic].messages.push({ role: 'assistant', content: output });
                 saveTopicsToStorage();
             }
             return;

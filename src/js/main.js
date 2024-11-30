@@ -2,7 +2,19 @@
 import 'bootstrap';
 import '../scss/styles.scss';
 import { processQuery } from './chat';
-import { topics, changeTopic, createTopicFromModal, loadMessagesForTopic, loadTopicsFromStorage, updateUrlTopic } from './topic';
+import { createTopicFromModal, loadMessagesForTopic, loadTopicsFromStorage, updateUrlTopic } from './topic';
+
+async function fetchModels() {
+    try {
+        const response = await fetch('http://localhost:11434/api/tags');
+        const data = await response.json();
+        console.log('Fetched models:', data.models);
+        return data.models;
+    } catch (error) {
+        console.error('Error fetching models:', error);
+        return [];
+    }
+}
 
 // Event Listeners
 document.getElementById('message-input').addEventListener('keydown', event => {
@@ -13,17 +25,18 @@ document.getElementById('send-btn').addEventListener('click', () => processQuery
 
 document.getElementById('create-topic-btn').addEventListener('click', createTopicFromModal);
 
-document.getElementById('switch-topic-btn').addEventListener('click', () => {
-    const topicName = prompt("Enter topic name to switch:");
-    if (topicName && topics[topicName]) {
-        changeTopic(topicName);
-    } else {
-        alert("Topic not found!");
-    }
-});
-
 // Initialize application on page load
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    const models = await fetchModels();
+    const modelSelect = document.getElementById('modelSelect');
+
+    models.forEach(model => {
+        const option = document.createElement('option');
+        option.value = model.model;
+        option.textContent = model.name;
+        modelSelect.appendChild(option);
+    });
+
     loadTopicsFromStorage();
     updateUrlTopic();
     loadMessagesForTopic();

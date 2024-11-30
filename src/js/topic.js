@@ -1,6 +1,6 @@
 // topic.js
 import { Modal } from 'bootstrap';
-import { createUserMessage, createOrUpdateAssistantMessage } from './chat';
+import { createOrUpdateAssistantMessage, createUserMessage } from './chat';
 
 export let currentTopic = 'default';  // Default topic
 export let topics = { default: [] };  // Default topic initialization
@@ -25,14 +25,13 @@ export function createTopicList() {
     const topicLists = document.querySelectorAll('#chat-list');
     topicLists.forEach(topicList => {
         topicList.innerHTML = '';  // Clear existing list items
-        Object.keys(topics).forEach(topic => {
-            const button = createTopicButton(topic);
+        Object.entries(topics).forEach(([topic, data]) => {
+            const button = createTopicButton(topic, data);
 
             // Add the "active" class to the current topic
             if (topic === currentTopic) {
                 button.classList.add('active');
             }
-
             // Create a delete button (Font Awesome trash icon) and append it inside the topic button
             const deleteButton = document.createElement('button');
             deleteButton.classList.add('btn', 'btn-link', 'p-0', 'ms-2', 'text-danger', 'delete-btn');
@@ -57,10 +56,24 @@ export function createTopicList() {
 }
 
 // Create a button element for each topic
-function createTopicButton(topic) {
+function createTopicButton(topic, data) {
+
     const button = document.createElement('a');
     button.classList.add('list-group-item', 'list-group-item-action');
-    button.textContent = topic;
+
+    const div = document.createElement('div');
+    div.classList.add('d-flex', 'align-items-start', 'flex-column');
+
+    const topicName = document.createElement('strong');
+    topicName.innerText = topic;
+    div.appendChild(topicName);
+
+    const modelInfo = document.createElement('small');
+    modelInfo.classList.add('text-muted', 'd-block');
+    modelInfo.innerText = `${data.model ?? 'default'}`; // Greyed-out text
+    div.appendChild(modelInfo);
+
+    button.appendChild(div);
     button.addEventListener('click', () => changeTopic(topic));
     return button;
 }
@@ -101,7 +114,7 @@ export function changeTopic(topicName) {
 export function loadMessagesForTopic() {
     const output = document.getElementById('output');
     output.innerHTML = '';
-    const messages = topics[currentTopic];
+    const messages = topics[currentTopic].messages;
 
     messages.forEach(msg => {
         if (msg.role === 'user') {
@@ -115,7 +128,12 @@ export function loadMessagesForTopic() {
 // Handle topic creation from modal form
 export function createTopicFromModal() {
     const topicName = document.getElementById('newTopicName').value.trim();
+    const modelSelect = document.getElementById('modelSelect'); // Fetch model selection dropdown
+
     if (topicName && !topics[topicName]) {
+        const selectedModel = modelSelect.value; // Get selected model
+        topics[topicName] = { messages: [], model: selectedModel }; // Save topic with model
+
         changeTopic(topicName);
         createTopicList();
         const topicModal = Modal.getInstance(document.getElementById('createTopicModal'));

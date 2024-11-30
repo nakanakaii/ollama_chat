@@ -10,8 +10,8 @@
     <script type="module" src="./js/color-modes.js"></script>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-body-primary">
-      <div class="container-fluid justify-content-between">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class=" container-fluid justify-content-between">
         <button
           class="navbar-toggler"
           type="button"
@@ -34,6 +34,15 @@
           <span class="text-nowrap body-text">Ollama</span></a
         >
       </div>
+
+      <div class="d-flex align-items-center d-none d-lg-flex">
+        <a
+          href="https://github.com/nakanakaii/ollama_chat"
+          class="btn btn-icon p-0 me-3"
+        >
+          <i class="fa-brands fa-github fa-2x"></i>
+        </a>
+      </div>
     </nav>
 
     <div class="d-flex" style="height: calc(100vh - 56px)">
@@ -50,21 +59,25 @@
         >
           New Chat
         </button>
-        <button class="btn btn-warning mb-3" id="switch-topic-btn">
-          Change Chat
-        </button>
         <div class="list-group" id="chat-list"></div>
       </div>
 
       <!-- Sidebar Offcanvas (Mobile) -->
       <div
-        class="offcanvas offcanvas-start"
+        class="offcanvas offcanvas-start "
         tabindex="-1"
         id="sidebarOffcanvas"
         aria-labelledby="sidebarOffcanvasLabel"
       >
         <div class="offcanvas-header">
           <h5 id="sidebarOffcanvasLabel">Chats</h5>
+          <div class="flex-grow-1"></div>
+           <a
+          href="https://github.com/nakanakaii/ollama_chat"
+          class="btn ml-auto btn-icon p-0 me-3"
+        >
+          <i class="fa-brands fa-github fa-2x"></i>
+        </a>
           <button
             type="button"
             class="btn-close"
@@ -76,19 +89,7 @@
           <button class="btn btn-success mb-2 w-100" id="add-topic-btn">
             New Chat
           </button>
-          <button class="btn btn-info mb-3 w-100" id="switch-topic-btn">
-            Change Chat
-          </button>
           <div class="list-group" id="chat-list">
-            <a href="#" class="list-group-item list-group-item-action"
-              >Chat 1</a
-            >
-            <a href="#" class="list-group-item list-group-item-action"
-              >Chat 2</a
-            >
-            <a href="#" class="list-group-item list-group-item-action"
-              >Chat 3</a
-            >
             <!-- Add more chats as needed -->
           </div>
         </div>
@@ -107,7 +108,9 @@
             type="text"
             placeholder="Type a message..."
           />
-          <button class="btn btn-primary" id="send-btn">Send</button>
+          <button class="btn btn-primary" id="send-btn">
+            <i class="fa fa-paper-plane"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -145,6 +148,8 @@
                 placeholder="Enter topic name"
               />
             </div>
+            <label for="modelSelect" class="form-label">Select Model</label>
+            <select class="form-control" id="modelSelect"></select>
           </div>
           <div class="modal-footer">
             <button

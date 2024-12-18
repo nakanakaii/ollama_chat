@@ -3,7 +3,7 @@ import { Modal } from 'bootstrap';
 import { createOrUpdateAssistantMessage, createUserMessage } from './chat';
 
 export let currentTopic = 'default';  // Default topic
-export let topics = { default: [] };  // Default topic initialization
+export let topics = { default: {} };  // Default topic initialization
 
 // Load topics from localStorage and initialize the current topic
 export function loadTopicsFromStorage() {
@@ -57,14 +57,11 @@ export function createTopicList() {
 
 // Create a button element for each topic
 function createTopicButton(topic, data) {
-
-    const button = document.createElement('a');
-    button.classList.add('list-group-item', 'list-group-item-action');
-
     const div = document.createElement('div');
     div.classList.add('d-flex', 'align-items-start', 'flex-column');
 
     const topicName = document.createElement('strong');
+    topicName.classList.add('topic-name');
     topicName.innerText = topic;
     div.appendChild(topicName);
 
@@ -73,6 +70,9 @@ function createTopicButton(topic, data) {
     modelInfo.innerText = `${data.model ?? 'default'}`; // Greyed-out text
     div.appendChild(modelInfo);
 
+    const button = document.createElement('a');
+    button.classList.add('list-group-item', 'list-group-item-action');
+    button.setAttribute('data-topic', topic);
     button.appendChild(div);
     button.addEventListener('click', () => changeTopic(topic));
     return button;
@@ -105,6 +105,19 @@ export function updateUrlTopic() {
 export function changeTopic(topicName) {
     if (!topics[topicName]) topics[topicName] = [];
     currentTopic = topicName;
+
+    // remove active class from all topic buttons
+    const topicButtons = document.querySelectorAll('.list-group-item');
+    topicButtons.forEach(topicButton => {
+        topicButton.classList.remove('active');
+    });
+
+    // add active class to the clicked topic button
+    const activeTopicButton = document.querySelector(`.list-group-item[data-topic="${topicName}"]`);
+    if (activeTopicButton) {
+        activeTopicButton.classList.add('active');
+    }
+
     saveTopicsToStorage();
     updateUrlTopic();
     loadMessagesForTopic();

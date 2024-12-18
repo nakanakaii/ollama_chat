@@ -15,21 +15,21 @@ This project is a simple chat application that allows users to interact with an 
 ```structure
 /src
     |-- js/
-        |-- chat.js        # Handles message creation, query processing, and assistant response
-        |-- topic.js       # Manages topics, including creation, deletion, and switching
-        |-- main.js        # Main entry point that initializes the app and manages events
-        |-- color-modes.js # Handles color mode switching
+        |-- chat.js         # Handles message creation, query processing, and assistant response
+        |-- topic.js        # Manages topics, including creation, deletion, and switching
+        |-- main.js         # Main entry point that initializes the app and manages events
+        |-- color-modes.js  # Handles color mode switching
     |-- scss/
-        |-- styles.scss   # Stylesheet for the chat interface
-        |-- fontawesome   # Stylesheet for the trash icon
-  |-- index.html     # HTML layout for the chat interface
+        |-- styles.scss     # Stylesheet for the chat interface
+        |-- fontawesome     # Stylesheet for the icons
+|-- index.html              # HTML layout for the chat interface
 ```
 
 ## Installation
 
 ### Prerequisites
 
-- [Ollama](ollama.com) with [llama3.2](https://ollama.com/library/llama3.2) model
+- [Ollama](ollama.com) with [llama3.2](https://ollama.com/library/llama3.2) model (you can use other models as well)
 - Node.js (v16 or later)
 - npm
 

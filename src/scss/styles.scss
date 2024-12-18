@@ -1,5 +1,12 @@
 // Import all of Bootstrap's CSS
 @import "bootstrap/scss/bootstrap";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
 
 // importing core styling file
 @import "./fontawesome/fontawesome.scss";
@@ -7,6 +14,22 @@
 // our project needs Classic Solid, Brands, and Sharp Solid
 @import "./fontawesome/solid.scss";
 @import "./fontawesome/brands.scss";
+
+
+@import "icon-list";
+
+$white: #fafafa;
+
+$theme-colors: (
+  "light": #ecd5e6,
+  "dark": #0a0a0a,
+  "primary": #481437,
+  "secondary": #419f88,
+  "info": #ccabfc,
+  "success": #0fa872,
+  "warning": #d8d00e,
+  "danger": #e53c05,
+);
 
 // Add transition for smooth fading and sliding effects
 @keyframes fadeIn {
@@ -59,10 +82,6 @@
     transform: scale(1);
     opacity: 1;
   }
-}
-
-.nav-img {
-  filter: invert(1);
 }
 
 .user-message,
@@ -122,4 +141,57 @@
 .list-group-item {
   border-radius: 12px !important;
   margin-bottom: 6px;
+}
+
+@include media-breakpoint-down(md) {
+  .topic-name {
+    width: 80em;
+  }
+}
+
+.topic-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 14em;
+}
+
+@include color-mode(dark) {
+  .list-group-item.active {
+    background-color: var(--bs-primary-bg-subtle) !important;
+    box-shadow: 0 4px 8px rgba(20, 20, 20, 0.1);
+  }
+
+  .nav-img {
+    filter: invert(1);
+  }
+}
+
+
+.bi {
+  width: 1em;
+  height: 1em;
+  fill: currentcolor;
+}
+
+.color-modes {
+  .dropdown-menu {
+    padding: .25rem;
+
+    li + li {
+      margin-top: .125rem;
+    }
+  }
+
+  .dropdown-item {
+    @include border-radius(.25rem);
+  }
+
+  .active {
+    font-weight: 600;
+
+    .bi {
+      display: block !important; // stylelint-disable-line declaration-no-important
+    }
+  }
 }
